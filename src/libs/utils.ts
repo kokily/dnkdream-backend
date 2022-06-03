@@ -15,13 +15,13 @@ export function validateBody(ctx: Context, schema: ObjectSchema<any>): boolean {
   return true;
 }
 
-export function loadUser(ctx: Context) {
+export function loadUser(ctx: Context): string | null {
   const { user_id } = ctx.state.user;
 
   if (!user_id) {
     ctx.status = 401;
     ctx.body = '로그인 후 이용하세요';
-    return;
+    return null;
   }
 
   return user_id;

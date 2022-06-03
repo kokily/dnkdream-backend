@@ -1,7 +1,8 @@
 import Router from 'koa-router';
+import auth from './auth';
 
 const api = new Router();
 
-api.get('/', (ctx) => (ctx.body = 'Hello!'));
+api.use('/auth', auth.routes());
 
 export default api;
