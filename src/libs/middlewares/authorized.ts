@@ -33,6 +33,9 @@ export const authorizedBlog: Middleware = async (ctx, next) => {
 
   const user = await userRepo.findOneBy({ id: ctx.state.user.user_id });
 
+  console.log('state', ctx.state.user);
+  console.log('user', user);
+
   if (!user) {
     ctx.status = 401;
     ctx.body = '로그인 후 이용해 주세요';
