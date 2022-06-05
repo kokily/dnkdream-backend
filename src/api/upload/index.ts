@@ -1,9 +1,8 @@
 import Router from 'koa-router';
-import { imageAppUpload, imageBlogUpload } from './imageUpload';
+import { imageUpload } from './imageUpload';
 
 const upload = new Router();
 
-upload.post('/app', imageAppUpload);
-upload.post('/blog', imageBlogUpload);
+upload.post('/', imageUpload);
 
 export default upload;

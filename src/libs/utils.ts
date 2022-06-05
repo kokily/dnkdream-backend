@@ -31,19 +31,13 @@ export function loadUser(ctx: Context): string {
   return user_id;
 }
 
-export type AppFileType = {
+export type FileType = {
   size: number;
   filepath: string;
   newFilename: string;
   mimetype: string;
   mtime: string;
   originalFilename: string;
-};
-
-export type BlogFileType = {
-  fileName: string;
-  filePath: string;
-  fileType: string;
 };
 
 export type S3ReturnType = {
@@ -70,18 +64,13 @@ const s3 = new aws.S3({
   apiVersion: '2006-03-01',
 });
 
-export async function uploadImage(
-  file: AppFileType & BlogFileType,
-  mode: 'app' | 'blog'
-): Promise<S3ReturnType> {
+export async function uploadImage(file: FileType): Promise<S3ReturnType> {
   return new Promise((resolve, reject) => {
     const Params: ParamsType = {
       Bucket: 'image.dnkdream.com',
-      Body: fs.createReadStream(mode === 'app' ? file.filepath : file.filePath),
-      Key: `${moment().format('YYMMDD_HHmmss')}_${
-        mode === 'app' ? file.newFilename.trim() : file.fileName.trim()
-      }`,
-      ContentType: mode === 'app' ? file.mimetype : file.fileType,
+      Body: fs.createReadStream(file.filepath),
+      Key: `${moment().format('YYMMDD_HHmmss')}_${file.newFilename.trim()}`,
+      ContentType: file.mimetype,
     };
 
     Params.Body.on('error', (err) => {
