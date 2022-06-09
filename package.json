@@ -4,7 +4,9 @@
   "description": "D&amp;K Dreams Backend API Server",
   "main": "server.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development ts-node-dev --respawn ./src/server.ts"
+    "dev": "cross-env NODE_ENV=development ts-node-dev --respawn ./src/server.ts",
+    "build": "npx tsc",
+    "start": "NODE_ENV=production node dist/server.js"
   },
   "repository": {
     "type": "git",
