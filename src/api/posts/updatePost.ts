@@ -12,7 +12,7 @@ async function updatePostAPI(ctx: Context) {
     category: string;
     title: string;
     body: string;
-    thumbnail?: string;
+    thumbnail: string;
     tags: string[];
   };
 
@@ -20,7 +20,7 @@ async function updatePostAPI(ctx: Context) {
     category: Joi.string().required(),
     title: Joi.string().required(),
     body: Joi.string().required(),
-    thumbnail: Joi.string(),
+    thumbnail: Joi.string().required(),
     tags: Joi.array().items(Joi.string().required()).required(),
   });
 
@@ -45,15 +45,24 @@ async function updatePostAPI(ctx: Context) {
       }
     });
 
-    const post = new Post();
+    await postsRepo.update(
+      { id },
+      {
+        category,
+        title,
+        body,
+        thumbnail,
+        tags,
+      }
+    );
 
-    post.category = category;
-    post.title = title;
-    post.body = body;
-    post.thumbnail = thumbnail ? thumbnail : null;
-    post.tags = tags;
+    const post = await postsRepo.findOneBy({ id });
 
-    await postsRepo.update({ id }, post);
+    if (!post) {
+      ctx.status = 404;
+      ctx.body = '존재하지 않는 포스트입니다.';
+      return;
+    }
 
     ctx.body = post;
   } catch (err: any) {
