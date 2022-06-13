@@ -1,9 +1,11 @@
 import type { Context } from 'koa';
 import Joi from 'joi';
+import sanitizeHtml from 'sanitize-html';
 import { validateBody } from '../../libs/utils';
 import { dataSource } from '../../server';
 import Post from '../../entities/Post';
 import Tag from '../../entities/Tag';
+import { sanitizeOptions } from '.';
 
 async function updatePostAPI(ctx: Context) {
   const { id }: { id: string } = ctx.params;
@@ -50,7 +52,7 @@ async function updatePostAPI(ctx: Context) {
       {
         category,
         title,
-        body,
+        body: sanitizeHtml(body, sanitizeOptions),
         thumbnail,
         tags,
       }

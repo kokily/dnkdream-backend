@@ -1,9 +1,11 @@
 import type { Context } from 'koa';
 import Joi from 'joi';
+import sanitizeHtml from 'sanitize-html';
 import Post from '../../entities/Post';
 import Tag from '../../entities/Tag';
 import { validateBody } from '../../libs/utils';
 import { dataSource } from '../../server';
+import { sanitizeOptions } from '.';
 
 async function addPostAPI(ctx: Context) {
   type RequestType = {
@@ -47,7 +49,7 @@ async function addPostAPI(ctx: Context) {
 
     post.category = category;
     post.title = title;
-    post.body = body;
+    post.body = sanitizeHtml(body, sanitizeOptions);
     post.thumbnail = thumbnail ? thumbnail : null;
     post.tags = tags;
 

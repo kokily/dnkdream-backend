@@ -1,4 +1,5 @@
 import Router from 'koa-router';
+import { options } from 'sanitize-html';
 import { authorizedBlog } from '../../libs/middlewares/authorized';
 import addPostAPI from './addPost';
 import listPosts from './listPosts';
@@ -15,5 +16,10 @@ posts.get('/near/:id', nearPostsAPI);
 posts.get('/:id', readPostAPI);
 posts.delete('/:id', authorizedBlog, removePostAPI);
 posts.patch('/:id', authorizedBlog, updatePostAPI);
+
+export const sanitizeOptions: typeof options = {
+  allowedTags: false,
+  allowedAttributes: false,
+};
 
 export default posts;
