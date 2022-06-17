@@ -17,12 +17,6 @@ class Reply extends BaseEntity {
   id!: string;
 
   @Column('text')
-  reply_username!: string;
-
-  @Column('text')
-  reply_password!: string;
-
-  @Column('text')
   reply_body!: string;
 
   @Column('timestamptz')
