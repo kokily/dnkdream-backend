@@ -3,9 +3,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import Comment from './Comment';
+import Reply from './Reply';
 
 @Entity()
 class Post extends BaseEntity {
@@ -34,6 +37,19 @@ class Post extends BaseEntity {
   @Column({ type: 'timestamptz' })
   @UpdateDateColumn()
   updated_at!: Date;
+
+  // Relations
+  @OneToMany((type) => Comment, (comment) => comment.post, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  comments!: Comment[];
+
+  @OneToMany((type) => Reply, (reply) => reply.post, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  replies!: Reply[];
 }
 
 export default Post;
