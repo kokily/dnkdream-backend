@@ -9,8 +9,8 @@ const comments = new Router();
 
 comments.post('/', addCommentAPI);
 comments.get('/:id', listCommentsAPI);
-comments.delete('/:id', removeCommentAPI);
-comments.patch('/:id', updateCommentAPI);
+comments.patch('/remove/:id', removeCommentAPI);
+comments.patch('/update:id', updateCommentAPI);
 comments.post('/confirm', confirmPasswordAPI);
 
 export default comments;

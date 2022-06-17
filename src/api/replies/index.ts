@@ -8,7 +8,7 @@ const replies = new Router();
 
 replies.post('/', addReplyAPI);
 replies.post('/confirm', confirmPasswordAPI);
-replies.delete('/:id', removeReply);
-replies.patch('/:id', updateReply);
+replies.patch('/remove/:id', removeReply);
+replies.patch('/update/:id', updateReply);
 
 export default replies;
