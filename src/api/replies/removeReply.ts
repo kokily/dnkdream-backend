@@ -8,7 +8,7 @@ async function removeReply(ctx: Context) {
   try {
     const repliesRepo = await dataSource.getRepository(Reply);
 
-    await repliesRepo.delete({ id });
+    await repliesRepo.update({ id }, { deleted: true, updated_at: new Date() });
 
     ctx.status = 200;
   } catch (err: any) {

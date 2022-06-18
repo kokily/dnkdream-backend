@@ -19,6 +19,9 @@ class Reply extends BaseEntity {
   @Column('text')
   reply_body!: string;
 
+  @Column({ type: 'boolean', default: false })
+  deleted!: boolean;
+
   @Column('timestamptz')
   @CreateDateColumn()
   created_at!: Date;

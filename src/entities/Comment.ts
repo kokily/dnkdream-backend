@@ -26,6 +26,9 @@ class Comment extends BaseEntity {
   @Column('text')
   comment_body!: string;
 
+  @Column({ type: 'boolean', default: false })
+  deleted!: boolean;
+
   @Column('timestamptz')
   @CreateDateColumn()
   created_at!: Date;

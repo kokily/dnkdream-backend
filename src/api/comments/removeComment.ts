@@ -38,7 +38,10 @@ async function removeCommentAPI(ctx: Context) {
       return;
     }
 
-    await commentsRepo.delete({ id });
+    await commentsRepo.update(
+      { id },
+      { deleted: true, updated_at: new Date() }
+    );
 
     ctx.status = 200;
   } catch (err: any) {
