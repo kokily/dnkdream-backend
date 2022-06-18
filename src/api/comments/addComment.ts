@@ -2,7 +2,7 @@ import type { Context } from 'koa';
 import bcrypt from 'bcryptjs';
 import Joi from 'joi';
 import Comment from '../../entities/Comment';
-import { validateBody } from '../../libs/utils';
+import { SendMail, validateBody } from '../../libs/utils';
 import { dataSource } from '../../server';
 
 async function addCommentAPI(ctx: Context) {
@@ -39,6 +39,12 @@ async function addCommentAPI(ctx: Context) {
     comment.comment_body = comment_body;
 
     await commentsRepo.save(comment);
+    await SendMail({
+      name: comment_username,
+      email: 'hkkokily5@gmail.com',
+      subject: comment_body.slice(0, 10),
+      body: comment_body,
+    });
 
     ctx.body = comment;
   } catch (err: any) {

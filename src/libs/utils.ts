@@ -1,9 +1,11 @@
 import type { Context } from 'koa';
 import type { ManagedUpload } from 'aws-sdk/clients/s3';
 import type { ObjectSchema } from 'joi';
+import type { SendMailOptions } from 'nodemailer';
 import aws from 'aws-sdk';
 import fs from 'fs';
 import moment from 'moment';
+import nodemailer from 'nodemailer';
 
 export const isProd = process.env.NODE_ENV === 'production';
 
@@ -88,4 +90,45 @@ export async function uploadImage(file: FileType): Promise<S3ReturnType> {
       }
     });
   });
+}
+
+export type MailProps = {
+  name: string;
+  email: string;
+  subject: string;
+  body: string;
+};
+
+export async function SendMail({
+  name,
+  email,
+  subject,
+  body,
+}: MailProps): Promise<string | null> {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_EMAIL,
+      pass: process.env.GMAIL_PASSWORD,
+    },
+  });
+
+  const options: SendMailOptions = {
+    from: email,
+    to: 'hkkokily5@gmail.com',
+    subject: 'D&K Dreams Blog 댓글이 달렸습니다',
+    html: `
+      <h2>제목: ${subject}</h2>
+      <h3>작성자: ${name} 님</h3>
+      <p>${body}</p>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(options);
+
+    return subject;
+  } catch (err: any) {
+    throw new Error(err);
+  }
 }
