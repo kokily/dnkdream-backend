@@ -13,9 +13,16 @@ async function listPosts(ctx: Context) {
   const { category, tag, cursor, title }: QueryType = ctx.query;
 
   try {
+    /*
+    .createQueryBuilder('comments')
+      .leftJoinAndSelect('comments.replies', 'reply')
+      .where('comments.postId = :postId', { postId: id })
+      .orderBy('comments.created_at', 'ASC');
+    */
     const postsRepo = await dataSource.getRepository(Post);
     const query = await postsRepo
       .createQueryBuilder('posts')
+      .leftJoinAndSelect('posts.comments', 'comment')
       .limit(20)
       .orderBy('posts.created_at', 'DESC');
 
