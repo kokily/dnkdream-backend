@@ -17,6 +17,7 @@ async function readPostAPI(ctx: Context) {
 
     const query = await postsRepo
       .createQueryBuilder('posts')
+      .leftJoinAndSelect('posts.comments', 'comment')
       .where('posts.category = :category', { category: post.category })
       .orderBy('posts.created_at', 'DESC');
     const posts = await query.getMany();
